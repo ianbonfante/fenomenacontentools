@@ -1,0 +1,270 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:var(--font-sans);}
+.wrap{padding:1.5rem 0;}
+h2{font-size:18px;font-weight:500;color:var(--color-text-primary);margin-bottom:4px;}
+.sub{font-size:13px;color:var(--color-text-secondary);margin-bottom:1.5rem;}
+.section-title{font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:.06em;color:var(--color-text-tertiary);margin-bottom:10px;}
+
+.controls-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-bottom:1.5rem;}
+.ctrl-card{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:12px 14px;}
+.ctrl-label{font-size:12px;color:var(--color-text-secondary);margin-bottom:6px;}
+.ctrl-card input[type=number]{width:100%;background:var(--color-background-primary);border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);padding:6px 10px;font-size:15px;font-weight:500;color:var(--color-text-primary);outline:none;}
+.ctrl-card input[type=number]:focus{border-color:var(--color-border-primary);}
+
+.toggle-row{display:flex;align-items:center;gap:8px;margin-bottom:1.5rem;}
+.toggle-btn{padding:7px 18px;font-size:13px;border-radius:20px;border:0.5px solid var(--color-border-secondary);background:transparent;color:var(--color-text-secondary);cursor:pointer;transition:background .15s,color .15s;}
+.toggle-btn.active{background:var(--color-text-primary);color:var(--color-background-primary);border-color:transparent;}
+
+.summary-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:2rem;}
+.sum-card{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:14px 16px;}
+.sum-label{font-size:12px;color:var(--color-text-secondary);margin-bottom:4px;}
+.sum-val{font-size:20px;font-weight:500;color:var(--color-text-primary);}
+.sum-note{font-size:11px;color:var(--color-text-tertiary);margin-top:3px;}
+
+.tbl-wrap{overflow-x:auto;border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);}
+table{width:100%;border-collapse:collapse;font-size:12.5px;}
+th{background:var(--color-background-secondary);font-weight:500;font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--color-text-secondary);padding:9px 11px;text-align:left;border-bottom:0.5px solid var(--color-border-tertiary);white-space:nowrap;}
+td{padding:11px 11px;color:var(--color-text-primary);border-bottom:0.5px solid var(--color-border-tertiary);vertical-align:top;line-height:1.45;}
+tr:last-child td{border-bottom:none;}
+tr.cheapest td{background:var(--color-background-success);}
+tr.cheapest td:first-child{border-left:3px solid #1D9E75;}
+tr.current td{background:var(--color-background-info);}
+tr.current td:first-child{border-left:3px solid #185FA5;}
+
+.badge{display:inline-block;font-size:11px;font-weight:500;padding:2px 8px;border-radius:20px;white-space:nowrap;}
+.b-green{background:#EAF3DE;color:#27500A;}
+.b-red{background:#FCEBEB;color:#791F1F;}
+.b-amber{background:#FAEEDA;color:#633806;}
+.b-blue{background:#E6F1FB;color:#0C447C;}
+.b-gray{background:var(--color-background-secondary);color:var(--color-text-secondary);border:0.5px solid var(--color-border-tertiary);}
+@media(prefers-color-scheme:dark){
+  .b-green{background:#27500A;color:#C0DD97;}
+  .b-red{background:#501313;color:#F7C1C1;}
+  .b-amber{background:#412402;color:#FAC775;}
+  .b-blue{background:#042C53;color:#B5D4F4;}
+}
+.cost-main{font-weight:500;font-size:13px;color:var(--color-text-primary);}
+.cost-sub{font-size:11px;color:var(--color-text-secondary);margin-top:2px;}
+.savings{font-size:11px;color:#27500A;margin-top:2px;}
+@media(prefers-color-scheme:dark){.savings{color:#C0DD97;}}
+
+.note-col{font-size:12px;color:var(--color-text-secondary);line-height:1.5;max-width:220px;}
+.legend{display:flex;gap:16px;flex-wrap:wrap;margin-top:12px;font-size:12px;color:var(--color-text-secondary);}
+.legend-item{display:flex;align-items:center;gap:6px;}
+.leg-dot{width:12px;height:12px;border-radius:2px;flex-shrink:0;}
+</style>
+
+<div class="wrap">
+  <h2>Calculadora de costos — herramientas de contenido</h2>
+  <p class="sub">Ajusta los valores para simular diferentes escenarios</p>
+
+  <p class="section-title">Parámetros</p>
+  <div class="controls-grid">
+    <div class="ctrl-card">
+      <div class="ctrl-label">Usuarios internos</div>
+      <input type="number" id="inp-users" value="18" min="1" max="200">
+    </div>
+    <div class="ctrl-card">
+      <div class="ctrl-label">Cuentas de clientes</div>
+      <input type="number" id="inp-accounts" value="22" min="1" max="200">
+    </div>
+    <div class="ctrl-card">
+      <div class="ctrl-label">Workspaces Planable</div>
+      <input type="number" id="inp-planable-ws" value="22" min="1" max="200">
+      <div style="font-size:11px;color:var(--color-text-tertiary);margin-top:4px;">1 por marca/país</div>
+    </div>
+    <div class="ctrl-card">
+      <div class="ctrl-label">Usuarios Filestage</div>
+      <input type="number" id="inp-filestage-u" value="10" min="10" max="200">
+      <div style="font-size:11px;color:var(--color-text-tertiary);margin-top:4px;">Mínimo 10</div>
+    </div>
+  </div>
+
+  <p class="section-title">Modalidad de pago</p>
+  <div class="toggle-row">
+    <button class="toggle-btn active" id="btn-monthly" onclick="setMode('monthly')">Mensual</button>
+    <button class="toggle-btn" id="btn-annual" onclick="setMode('annual')">Anual</button>
+  </div>
+
+  <p class="section-title">Resumen comparativo</p>
+  <div class="summary-cards" id="summary-cards"></div>
+
+  <p class="section-title">Detalle por plataforma</p>
+  <div class="tbl-wrap">
+    <table id="main-table">
+      <thead>
+        <tr>
+          <th>Plataforma</th>
+          <th>Costo/mes</th>
+          <th>Costo anual</th>
+          <th>Acceso sin correo</th>
+          <th>¿Reemplaza Paper?</th>
+          <th>Enfoque</th>
+          <th>Notas clave</th>
+        </tr>
+      </thead>
+      <tbody id="table-body"></tbody>
+    </table>
+  </div>
+
+  <div class="legend">
+    <div class="legend-item"><div class="leg-dot" style="background:#EAF3DE;border:1px solid #3B6D11;"></div><span>Opción más económica</span></div>
+    <div class="legend-item"><div class="leg-dot" style="background:#E6F1FB;border:1px solid #185FA5;"></div><span>Herramienta actual (Monday)</span></div>
+  </div>
+</div>
+
+<script>
+var mode = 'monthly';
+
+function setMode(m) {
+  mode = m;
+  document.getElementById('btn-monthly').classList.toggle('active', m === 'monthly');
+  document.getElementById('btn-annual').classList.toggle('active', m === 'annual');
+  render();
+}
+
+function getInputs() {
+  return {
+    users: Math.max(1, parseInt(document.getElementById('inp-users').value) || 18),
+    accounts: Math.max(1, parseInt(document.getElementById('inp-accounts').value) || 22),
+    planableWs: Math.max(1, parseInt(document.getElementById('inp-planable-ws').value) || 22),
+    filestageU: Math.max(10, parseInt(document.getElementById('inp-filestage-u').value) || 10)
+  };
+}
+
+function calcCosts(inp) {
+  var u = inp.users, ws = inp.planableWs, fu = inp.filestageU;
+  var milanoteUsers = u <= 10 ? 10 : 50;
+
+  var platforms = [
+    {
+      id: 'planable',
+      name: 'Planable',
+      monthly: 49 * ws,
+      annual: 49 * ws * 12,
+      annualSavings: 0,
+      noLogin: 'Requiere invitación',
+      noLoginType: 'amber',
+      replacesPaper: 'Parcial',
+      replacesType: 'amber',
+      focus: 'Calendario redes sociales',
+      notes: 'Cobra por workspace (marca/país), no por usuario. Clientes necesitan aceptar invitación y configurar nombre. Ideal para programación de posts.'
+    },
+    {
+      id: 'monday',
+      name: 'Monday',
+      monthly: u * 15,
+      annual: u * 12 * 12,
+      annualSavings: u * (15-12) * 12,
+      noLogin: 'No — requiere cuenta',
+      noLoginType: 'red',
+      replacesPaper: 'Sí (con upgrade)',
+      replacesType: 'green',
+      focus: 'Gestión de proyectos',
+      notes: 'Plan actual. Upgrade necesario para compartir links externos. Clientes deben crear cuenta. Se integra con Dropbox. Flujo similar a Paper.'
+    },
+    {
+      id: 'milanote',
+      name: 'Milanote',
+      monthly: milanoteUsers === 10 ? 49 : 225,
+      annual: milanoteUsers === 10 ? 588 : 1188,
+      annualSavings: milanoteUsers === 10 ? (49*12 - 588) : (225*12 - 1188),
+      noLogin: 'Sí — link único',
+      noLoginType: 'green',
+      replacesPaper: 'Sí',
+      replacesType: 'green',
+      focus: 'Planificación visual (canvas)',
+      notes: 'Plan para ' + milanoteUsers + ' usuarios (solo hay opción de 10 o 50). Arte + copy en tablero. Clientes ven, comentan y aprueban sin cuenta ni correo.'
+    },
+    {
+      id: 'filestage',
+      name: 'Filestage',
+      monthly: 395 * Math.ceil(fu / 10),
+      annual: 329 * Math.ceil(fu / 10) * 12,
+      annualSavings: (395 - 329) * Math.ceil(fu / 10) * 12,
+      noLogin: 'Sí — link directo',
+      noLoginType: 'green',
+      replacesPaper: 'Parcial',
+      replacesType: 'amber',
+      focus: 'Revisión y aprobación de artes',
+      notes: 'Comentarios con "pins" sobre el arte. Control de versiones V1 vs V2. Para más de 10 usuarios hay que cotizar. ' + Math.ceil(fu/10) + ' bloque(s) de 10 usuarios.'
+    },
+    {
+      id: 'rella',
+      name: 'Rella',
+      monthly: u * 30,
+      annual: u * 24 * 12,
+      annualSavings: u * (30-24) * 12,
+      noLogin: 'Sí — link sin login',
+      noLoginType: 'green',
+      replacesPaper: 'Sí',
+      replacesType: 'green',
+      focus: 'Social media + project mgmt',
+      notes: 'La más completa. Estados: idea → en proceso → aprobado → publicado. Preview del feed incluido. La opción más cara del grupo.'
+    }
+  ];
+  return platforms;
+}
+
+function fmt(n) {
+  return '$' + Math.round(n).toLocaleString();
+}
+
+function badgeHTML(text, type) {
+  return '<span class="badge b-' + type + '">' + text + '</span>';
+}
+
+function render() {
+  var inp = getInputs();
+  var platforms = calcCosts(inp);
+
+  var costs = platforms.map(function(p) { return mode === 'monthly' ? p.monthly : p.annual; });
+  var minCost = Math.min.apply(null, costs);
+
+  var summaryEl = document.getElementById('summary-cards');
+  var cheapest = platforms[costs.indexOf(minCost)];
+  var mondayP = platforms.find(function(p){ return p.id === 'monday'; });
+  var mondayCost = mode === 'monthly' ? mondayP.monthly : mondayP.annual;
+
+  summaryEl.innerHTML = platforms.map(function(p) {
+    var c = mode === 'monthly' ? p.monthly : p.annual;
+    var diff = c - mondayCost;
+    var diffStr = diff === 0 ? 'actual' : (diff > 0 ? '+' + fmt(diff) + ' vs Monday' : fmt(Math.abs(diff)) + ' menos que Monday');
+    return '<div class="sum-card"><div class="sum-label">' + p.name + '</div><div class="sum-val">' + fmt(c) + '</div><div class="sum-note">' + (mode === 'monthly' ? '/mes' : '/año') + ' &mdash; ' + diffStr + '</div></div>';
+  }).join('');
+
+  var tbody = document.getElementById('table-body');
+  tbody.innerHTML = platforms.map(function(p, i) {
+    var c = mode === 'monthly' ? p.monthly : p.annual;
+    var isMin = c === minCost;
+    var isCurrent = p.id === 'monday';
+    var rowClass = isMin ? 'cheapest' : (isCurrent ? 'current' : '');
+
+    var costMain = fmt(c) + (mode === 'monthly' ? '/mes' : '/año');
+    var costSub = mode === 'monthly'
+      ? fmt(p.monthly * 12) + ' si pagas anual'
+      : fmt(p.monthly) + '/mes si pagas mensual';
+    var savingsStr = mode === 'annual' && p.annualSavings > 0
+      ? '<div class="savings">Ahorro vs mensual: ' + fmt(p.annualSavings) + '</div>'
+      : '';
+
+    return '<tr class="' + rowClass + '">'
+      + '<td><strong>' + p.name + '</strong>' + (isMin ? ' <span class="badge b-green">+ econ.</span>' : '') + (isCurrent ? ' <span class="badge b-blue">actual</span>' : '') + '</td>'
+      + '<td><div class="cost-main">' + costMain + '</div><div class="cost-sub">' + costSub + '</div>' + savingsStr + '</td>'
+      + '<td><div class="cost-main">' + fmt(p.annual) + '</div></td>'
+      + '<td>' + badgeHTML(p.noLogin, p.noLoginType) + '</td>'
+      + '<td>' + badgeHTML(p.replacesPaper, p.replacesType) + '</td>'
+      + '<td style="font-size:12px;color:var(--color-text-secondary);white-space:nowrap;">' + p.focus + '</td>'
+      + '<td class="note-col">' + p.notes + '</td>'
+      + '</tr>';
+  }).join('');
+}
+
+['inp-users','inp-accounts','inp-planable-ws','inp-filestage-u'].forEach(function(id) {
+  document.getElementById(id).addEventListener('input', render);
+});
+
+render();
+</script>
